@@ -14,6 +14,48 @@
             <button id="absent-button" type="button">不参加</button>
             <button id="confirm-button" type="button">確認</button>
         </div>
+        <div style="margin-top: 20px;">
+            <p>参加確認</p>
+            <div id="member-input" style="border: 1px solid #ccc; min-height: 24px; padding: 8px; white-space: pre-wrap;"></div>
+        </div>
+        <script>
+            const STORAGE_KEY = "attendance-status";
+            const joinButton = document.getElementById("join-button");
+            const absentButton = document.getElementById("absent-button");
+            const confirmButton = document.getElementById("confirm-button");
+            const memberInput = document.getElementById("member-input");
+
+            let selectedStatus = localStorage.getItem(STORAGE_KEY) || null;
+
+            function renderStatus() {
+                const savedStatus = localStorage.getItem(STORAGE_KEY);
+
+                if (savedStatus === "join") {
+                    memberInput.textContent = "参加";
+                } else if (savedStatus === "absent") {
+                    memberInput.textContent = "不参加";
+                } else {
+                    memberInput.textContent = "未回答";
+                }
+            }
+
+            joinButton.addEventListener("click", () => {
+                selectedStatus = "join";
+            });
+
+            absentButton.addEventListener("click", () => {
+                selectedStatus = "absent";
+            });
+
+            confirmButton.addEventListener("click", () => {
+                if (!selectedStatus) return;
+
+                localStorage.setItem(STORAGE_KEY, selectedStatus);
+                renderStatus();
+            });
+
+            renderStatus();
+        </script>
         <script src="app.js" defer></script>
     </body>
 </html>
