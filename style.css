@@ -1,0 +1,55 @@
+/* 共通ボタン設定 */
+#join-button,
+#absent-button,
+#confirm-button {
+    box-sizing: border-box;
+    min-height: 48px;       /* スマホで押しやすい最小高さ */
+    padding: 0.9rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    touch-action: manipulation; /* タップ遅延対策 */
+    transition: opacity 0.2s ease;
+}
+
+#join-button {
+    background: #1e88e5;
+    color: #fff;
+}
+
+#absent-button {
+    background: #ef5350;
+    color: #fff;
+}
+
+#confirm-button {
+    background: #2e7d32;
+    color: #fff;
+}
+
+/* ボタン群がある場合の余白 */
+.button-group,
+body > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+/* スマホ用 */
+@media (max-width: 480px) {
+    #join-button,
+    #absent-button,
+    #confirm-button {
+        width: 100%;
+        min-height: 52px;
+        font-size: 1.05rem;
+    }
+
+    .button-group,
+    body > div {
+        flex-direction: column;
+    }
+}
