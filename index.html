@@ -14,18 +14,52 @@
             <button id="absent-button" type="button">不参加</button>
             <button id="confirm-button" type="button">確認</button>
         </div>
+
+        <div style="margin-top: 20px;">
+            <p>名前</p>
+            <input type="text" id="user-name" placeholder="名前を入力してください" />
+        </div>
+
         <div style="margin-top: 20px;">
             <p>参加確認</p>
             <div id="member-input" style="border: 1px solid #ccc; min-height: 24px; padding: 8px; white-space: pre-wrap;"></div>
         </div>
+
+        <div style="margin-top: 20px;">
+            <table border="1" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>名前</th>
+                        <th>参加状況</th>
+                    </tr>
+                </thead>
+                <tbody id="attendance-table-body"></tbody>
+            </table>
+        </div>
+
         <script>
             const STORAGE_KEY = "attendance-status";
+            const MEMBER_STORAGE_KEY = "attendance-members";
             const joinButton = document.getElementById("join-button");
             const absentButton = document.getElementById("absent-button");
             const confirmButton = document.getElementById("confirm-button");
             const memberInput = document.getElementById("member-input");
+            const userNameInput = document.getElementById("user-name");
+            const tableBody = document.getElementById("attendance-table-body");
 
             let selectedStatus = localStorage.getItem(STORAGE_KEY) || null;
+
+            function getMembers() {
+                try {
+                    return JSON.parse(localStorage.getItem(MEMBER_STORAGE_KEY) || "[]");
+                } catch (error) {
+                    return [];
+                }
+            }
+
+            function saveMembers(members) {
+                localStorage.setItem(MEMBER_STORAGE_KEY, JSON.stringify(members));
+            }
 
             function renderStatus() {
                 const savedStatus = localStorage.getItem(STORAGE_KEY);
@@ -39,22 +73,64 @@
                 }
             }
 
+            function renderTable() {
+                const members = getMembers();
+                tableBody.innerHTML = "";
+
+                members.forEach((member) => {
+                    const row = document.createElement("tr");
+
+                    const nameCell = document.createElement("td");
+                    nameCell.textContent = member.name;
+
+                    const statusCell = document.createElement("td");
+                    statusCell.textContent = member.status === "join" ? "参加" : "不参加";
+
+                    row.appendChild(nameCell);
+                    row.appendChild(statusCell);
+                    tableBody.appendChild(row);
+                });
+            }
+
             joinButton.addEventListener("click", () => {
                 selectedStatus = "join";
+                memberInput.textContent = "参加";
             });
 
             absentButton.addEventListener("click", () => {
                 selectedStatus = "absent";
+                memberInput.textContent = "不参加";
             });
 
             confirmButton.addEventListener("click", () => {
-                if (!selectedStatus) return;
+                if (!selectedStatus) {
+                    memberInput.textContent = "参加または不参加を選んでください";
+                    return;
+                }
 
+                const name = userNameInput.value.trim();
+                if (!name) {
+                    memberInput.textContent = "名前を入力してください";
+                    return;
+                }
+
+                const members = getMembers();
+                const existingMemberIndex = members.findIndex((member) => member.name === name);
+
+                if (existingMemberIndex >= 0) {
+                    members[existingMemberIndex].status = selectedStatus;
+                } else {
+                    members.push({ name, status: selectedStatus });
+                }
+
+                saveMembers(members);
                 localStorage.setItem(STORAGE_KEY, selectedStatus);
                 renderStatus();
+                renderTable();
             });
 
             renderStatus();
+            renderTable();
         </script>
         <script src="app.js" defer></script>
     </body>
