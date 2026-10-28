@@ -25,13 +25,20 @@
     color: #fff;
 }
 
-/* ボタン群がある場合の余白 */
-.button-group,
-body > div {
+.attendance-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
+}
+
+#join-button,
+#absent-button {
+    flex: 1 1 0;
+}
+
+#confirm-button {
+    flex: 1 1 100%;
 }
 
 body {
@@ -46,9 +53,17 @@ h1 {
     font-size: clamp(1.8rem, 5vw, 2.5rem);
 }
 
+h2 {
+    margin: 1.2rem 0 0.8rem;
+}
+
 p {
     margin: 0 0 8px;
     font-size: 1rem;
+}
+
+.field {
+    margin-top: 20px;
 }
 
 #user-name,
@@ -89,22 +104,18 @@ td {
     word-break: break-word;
 }
 
-/* スマホ用 */
 @media (max-width: 480px) {
-    .button-group,
-    body > div {
-        flex-direction: row;
+    .attendance-buttons {
+        flex-wrap: wrap;
     }
 
     #join-button,
     #absent-button {
-        flex: 1 1 0;
-        min-height: 52px;
-        font-size: 1.05rem;
+        flex: 1 1 calc(50% - 12px);
     }
 
     #confirm-button {
-        width: 100%;
+        flex: 1 1 100%;
         min-height: 52px;
         font-size: 1.05rem;
     }
