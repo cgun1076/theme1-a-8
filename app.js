@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const STORAGE_KEY = "attendance-status";
     const MEMBER_STORAGE_KEY = "attendance-members";
+    const LAST_SUBMISSION_KEY = "attendance-last-submission";
 
     const joinButton = document.getElementById("join-button");
     const absentButton = document.getElementById("absent-button");
@@ -30,6 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(MEMBER_STORAGE_KEY, JSON.stringify(members));
     }
 
+    function getLastSubmission() {
+        try {
+            return JSON.parse(localStorage.getItem(LAST_SUBMISSION_KEY) || "null");
+        } catch (error) {
+            return null;
+        }
+    }
+
     function renderStatus() {
         const savedStatus = localStorage.getItem(STORAGE_KEY);
 
@@ -45,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderTable() {
         const members = getMembers();
         tableBody.innerHTML = "";
+        const lastSubmission = getLastSubmission();
 
         const joinMembers = members.filter((member) => member.status === "join");
         const absentMembers = members.filter((member) => member.status === "absent");
@@ -54,10 +64,18 @@ document.addEventListener("DOMContentLoaded", () => {
             const row = document.createElement("tr");
 
             const joinCell = document.createElement("td");
-            joinCell.textContent = joinMembers[rowIndex]?.name || "";
+            const joinName = joinMembers[rowIndex]?.name || "";
+            joinCell.textContent = joinName;
+            if (lastSubmission && lastSubmission.status === "join" && lastSubmission.name === joinName) {
+                joinCell.classList.add("latest-cell");
+            }
 
             const absentCell = document.createElement("td");
-            absentCell.textContent = absentMembers[rowIndex]?.name || "";
+            const absentName = absentMembers[rowIndex]?.name || "";
+            absentCell.textContent = absentName;
+            if (lastSubmission && lastSubmission.status === "absent" && lastSubmission.name === absentName) {
+                absentCell.classList.add("latest-cell");
+            }
 
             row.appendChild(joinCell);
             row.appendChild(absentCell);
@@ -106,6 +124,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         saveMembers(members);
         localStorage.setItem(STORAGE_KEY, selectedStatus);
+        localStorage.setItem(
+            LAST_SUBMISSION_KEY,
+            JSON.stringify({ name, status: selectedStatus })
+        );
 
         alert("提出しました");
 

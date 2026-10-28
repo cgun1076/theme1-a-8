@@ -134,6 +134,19 @@ td {
     word-break: break-word;
 }
 
+tbody td:first-child {
+    background-color: #e8f5e9;
+}
+
+tbody td:nth-child(2) {
+    background-color: #ffebee;
+}
+
+td.latest-cell {
+    box-shadow: inset 0 0 0 3px #ffb300;
+    font-weight: 700;
+}
+
 @media (max-width: 480px) {
     .attendance-buttons {
         flex-wrap: wrap;
