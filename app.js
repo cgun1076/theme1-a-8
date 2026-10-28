@@ -15,3 +15,17 @@ document.addEventListener("DOMContentLoaded", () => {
     joinButton.addEventListener("click", showConfirmButton);
     absentButton.addEventListener("click", showConfirmButton);
 });
+const setSelectedButton = (selectedButton, otherButton) => {
+    selectedButton.classList.add("is-selected");
+    otherButton.classList.remove("is-selected");
+};
+
+joinButton.addEventListener("click", () => {
+    setSelectedButton(joinButton, absentButton);
+    showConfirmButton();
+});
+
+absentButton.addEventListener("click", () => {
+    setSelectedButton(absentButton, joinButton);
+    showConfirmButton();
+});
