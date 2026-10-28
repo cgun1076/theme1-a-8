@@ -11,7 +11,7 @@
     border-radius: 12px;
     cursor: pointer;
     touch-action: manipulation; /* タップ遅延対策 */
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 #join-button,
@@ -23,6 +23,36 @@
 #confirm-button {
     background: #1e88e5;
     color: #fff;
+}
+
+#join-button.is-selected {
+    background: #fff;
+    color: #2e7d32;
+    border: 3px solid #2e7d32;
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
+    transform: translateY(1px);
+}
+
+#absent-button.is-selected {
+    background: #fff;
+    color: #d32f2f;
+    border: 3px solid #d32f2f;
+    box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.15);
+    transform: translateY(1px);
+}
+
+#join-button:active,
+#absent-button:active,
+#confirm-button:active {
+    transform: translateY(1px);
+    opacity: 0.9;
+}
+
+#join-button:focus-visible,
+#absent-button:focus-visible,
+#confirm-button:focus-visible {
+    outline: 3px solid rgba(30, 136, 229, 0.4);
+    outline-offset: 2px;
 }
 
 .attendance-buttons {
