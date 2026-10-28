@@ -1,39 +1,17 @@
-const joinButton = document.getElementById('join-button');
-const absentButton = document.getElementById('absent-button');
-const confirmButton = document.getElementById('confirm-button');
+document.addEventListener("DOMContentLoaded", () => {
+    const confirmButton = document.querySelector("#confirm-button");
+    const joinButton = document.querySelector("#join-button");
+    const absentButton = document.querySelector("#absent-button");
 
-if (joinButton && absentButton && confirmButton) {
-    const choiceButtons = [joinButton, absentButton];
+    if (!confirmButton || !joinButton || !absentButton) return;
 
-    // 初期状態: 未選択
-    confirmButton.disabled = true;
+    // 最初は非表示
+    confirmButton.hidden = true;
 
-    const updateSelection = (selectedButton) => {
-        choiceButtons.forEach((button) => {
-            const isSelected = button === selectedButton;
-
-            button.setAttribute('aria-pressed', String(isSelected));
-            button.dataset.selected = String(isSelected);
-
-            // 視覚的に選択状態を分かりやすくする（CSSファイルは使わない）
-            button.style.opacity = isSelected ? '0.75' : '1';
-            button.style.transform = isSelected ? 'translateY(1px)' : 'none';
-            button.style.fontWeight = isSelected ? 'bold' : 'normal';
-            button.style.backgroundColor = isSelected ? '#dfe7f5' : '';
-            button.style.borderColor = isSelected ? '#5b8def' : '';
-            button.style.boxShadow = isSelected ? '0 0 0 2px rgba(91, 141, 239, 0.4)' : 'none';
-        });
-
-        confirmButton.disabled = selectedButton == null;
+    const showConfirmButton = () => {
+        confirmButton.hidden = false;
     };
 
-    choiceButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            const isAlreadySelected = button.dataset.selected === 'true';
-            updateSelection(isAlreadySelected ? null : button);
-        });
-    });
-
-    // いったん未選択状態を保持
-    updateSelection(null);
-}
+    joinButton.addEventListener("click", showConfirmButton);
+    absentButton.addEventListener("click", showConfirmButton);
+});
