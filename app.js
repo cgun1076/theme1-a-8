@@ -31,14 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(MEMBER_STORAGE_KEY, JSON.stringify(members));
     }
 
-    function getLastSubmission() {
-        try {
-            return JSON.parse(localStorage.getItem(LAST_SUBMISSION_KEY) || "null");
-        } catch (error) {
-            return null;
-        }
-    }
-
     function renderStatus() {
         const savedStatus = localStorage.getItem(STORAGE_KEY);
 
@@ -54,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderTable() {
         const members = getMembers();
         tableBody.innerHTML = "";
-        const lastSubmission = getLastSubmission();
+        const lastSubmission = JSON.parse(localStorage.getItem(LAST_SUBMISSION_KEY) || "null");
 
         const joinMembers = members.filter((member) => member.status === "join");
         const absentMembers = members.filter((member) => member.status === "absent");
