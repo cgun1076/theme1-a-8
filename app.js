@@ -103,6 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
         saveMembers(members);
         localStorage.setItem(STORAGE_KEY, selectedStatus);
 
+        alert("提出しました");
+
         renderStatus();
         renderTable();
     });
