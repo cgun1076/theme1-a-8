@@ -46,19 +46,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const members = getMembers();
         tableBody.innerHTML = "";
 
-        members.forEach((member) => {
+        const joinMembers = members.filter((member) => member.status === "join");
+        const absentMembers = members.filter((member) => member.status === "absent");
+        const maxRows = Math.max(joinMembers.length, absentMembers.length);
+
+        for (let rowIndex = 0; rowIndex < maxRows; rowIndex++) {
             const row = document.createElement("tr");
 
-            const nameCell = document.createElement("td");
-            nameCell.textContent = member.name;
+            const joinCell = document.createElement("td");
+            joinCell.textContent = joinMembers[rowIndex]?.name || "";
 
-            const statusCell = document.createElement("td");
-            statusCell.textContent = member.status === "join" ? "参加" : "不参加";
+            const absentCell = document.createElement("td");
+            absentCell.textContent = absentMembers[rowIndex]?.name || "";
 
-            row.appendChild(nameCell);
-            row.appendChild(statusCell);
+            row.appendChild(joinCell);
+            row.appendChild(absentCell);
             tableBody.appendChild(row);
-        });
+        }
     }
 
     const setSelectedButton = (selectedButton, otherButton) => {
